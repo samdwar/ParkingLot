@@ -9,9 +9,12 @@ import java.util.*;
  */
 public class ParkingUtils {
     public Vehicle parkVehicle(String registrationNumber, String color, PriorityQueue<Integer> emptySlots) {
-        int assignedSlotNumber = emptySlots.poll();
-        Vehicle vehicle = new Vehicle(registrationNumber, color, assignedSlotNumber);
-        System.out.println("Allocated slot number: " + assignedSlotNumber);
+        Vehicle vehicle = null;
+        if (emptySlots != null && emptySlots.size() > 0) {
+            int assignedSlotNumber = emptySlots.poll();
+            vehicle = new Vehicle(registrationNumber, color, assignedSlotNumber);
+            System.out.println("Allocated slot number: " + assignedSlotNumber);
+        }
         return vehicle;
     }
 

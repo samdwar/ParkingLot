@@ -70,7 +70,13 @@ public class CommandInterpreter {
                     String color = inputs[1];
                     List<String> regNoList = parkingUtils.getRegistrationNoForCarWithColor(parkingLot, color);
                     if (regNoList != null && regNoList.size() > 0) {
-                        System.out.println(regNoList);
+                        StringBuilder registrationNos = new StringBuilder();
+                        String commaDelimiter = ", ";
+                        for (String registrationNo : regNoList) {
+                            registrationNos.append(registrationNo).append(commaDelimiter);
+                        }
+
+                        System.out.println(registrationNos.deleteCharAt(registrationNos.length() - 2));
                     } else {
                         System.out.println("Not found");
                     }
@@ -80,7 +86,8 @@ public class CommandInterpreter {
                     color = inputs[1];
                     List<Integer> slotList = parkingUtils.getSlotNoForCarWithColor(parkingLot, color);
                     if (slotList != null && slotList.size() > 0) {
-                        System.out.println(slotList);
+                        String commaSeparatedSlotList = getCommaSeparateList(slotList);
+                        System.out.println(commaSeparatedSlotList);
                     } else {
                         System.out.println("Not found");
                     }
@@ -90,12 +97,22 @@ public class CommandInterpreter {
                     String registrationNumber = inputs[1];
                     slotList = parkingUtils.getSlotNoForRegistrationNumber(parkingLot, registrationNumber);
                     if (slotList != null && slotList.size() > 0) {
-                        System.out.println(slotList);
+                        String commaSeparatedList = getCommaSeparateList(slotList);
+                        System.out.println(commaSeparatedList);
                     } else {
                         System.out.println("Not found");
                     }
                     break;
             }
         }
+    }
+
+    private String getCommaSeparateList(List<Integer> slotList) {
+        StringBuilder slots = new StringBuilder();
+        String commaDelimiter = ", ";
+        for (int slot : slotList) {
+            slots.append(slot).append(commaDelimiter);
+        }
+        return slots.deleteCharAt(slots.length() - 2).toString();
     }
 }
