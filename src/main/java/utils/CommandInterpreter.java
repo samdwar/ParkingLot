@@ -16,6 +16,7 @@ import java.util.PriorityQueue;
 public class CommandInterpreter {
     private ParkingLot parkingLot;
     private int numberOfParkingSlots = 0;
+    /*This will work like Min heap so that we will get always nearest parking space*/
     private PriorityQueue<Integer> emptySlots = new PriorityQueue<>();
     private ParkingUtils parkingUtils = new ParkingUtils();
 

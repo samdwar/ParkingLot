@@ -16,6 +16,7 @@ public class Main {
             isInputIsFile = true;
         }
         CommandInterpreter commandInterpreter = new CommandInterpreter();
+        /*Input is file then read all line from file*/
         if (isInputIsFile) {
             try (BufferedReader br = new BufferedReader(new FileReader(args[0]))) {
                 String line;
@@ -26,9 +27,11 @@ public class Main {
                 e.printStackTrace();
             }
         } else {
+            /*Input would from STDIN so read line by line and pass for further processing*/
             while (true) {
                 Scanner scanner = new Scanner(System.in);
                 String line = scanner.nextLine();
+                /*In case you want to exit then 'exit' as command*/
                 if (line.equalsIgnoreCase(Constants.EXIT)) {
                     break;
                 }

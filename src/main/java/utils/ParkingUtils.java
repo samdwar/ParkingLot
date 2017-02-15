@@ -13,6 +13,7 @@ public class ParkingUtils {
     public Vehicle parkVehicle(String registrationNumber, String color, PriorityQueue<Integer> emptySlots) {
         Vehicle vehicle = null;
         if (emptySlots != null && emptySlots.size() > 0) {
+            /*Get nearest parking space*/
             int assignedSlotNumber = emptySlots.poll();
             vehicle = new Vehicle(registrationNumber, color, assignedSlotNumber);
             System.out.println("Allocated slot number: " + assignedSlotNumber);
