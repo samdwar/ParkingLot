@@ -1,5 +1,7 @@
 package utils;
 
+import parking.Parking;
+import parking.ParkingLot;
 import vehical.Vehicle;
 
 import java.util.*;
@@ -18,12 +20,13 @@ public class ParkingUtils {
         return vehicle;
     }
 
-    public boolean leaveParking(List<Vehicle> parkingLot, int requestedSlotToLeave) {
-        Iterator<Vehicle> iterator = parkingLot.listIterator();
+    public boolean leaveParking(ParkingLot parkingLot, int requestedSlotToLeave) {
+        List<Parking> parkingList = parkingLot.getParkingLotList();
+        Iterator<Parking> iterator = parkingList.listIterator();
         boolean isRemoved = false;
         while (iterator.hasNext()) {
-            Vehicle v = iterator.next();
-            if (v.getSlotNumber() == requestedSlotToLeave) {
+            Parking p = iterator.next();
+            if (p.getVehicle().getSlotNumber() == requestedSlotToLeave) {
                 iterator.remove();
                 isRemoved = true;
             }
@@ -31,32 +34,35 @@ public class ParkingUtils {
         return isRemoved;
     }
 
-    public List<String> getRegistrationNoForCarWithColor(List<Vehicle> parkingLot, String color) {
+    public List<String> getRegistrationNoForCarWithColor(ParkingLot parkingLot, String color) {
+        List<Parking> parkingList = parkingLot.getParkingLotList();
         List<String> registrationNumbers = new ArrayList<>();
-        for (Vehicle vehicleInParkingLot : parkingLot) {
-            if (vehicleInParkingLot.getColor().equalsIgnoreCase(color)) {
-                registrationNumbers.add(vehicleInParkingLot.getRegistrationNumber());
+        for (Parking parking : parkingList) {
+            if (parking.getVehicle().getColor().equalsIgnoreCase(color)) {
+                registrationNumbers.add(parking.getVehicle().getRegistrationNumber());
             }
         }
         return registrationNumbers;
 
     }
 
-    public List<Integer> getSlotNoForCarWithColor(List<Vehicle> parkingLot, String color) {
+    public List<Integer> getSlotNoForCarWithColor(ParkingLot parkingLot, String color) {
+        List<Parking> parkingList = parkingLot.getParkingLotList();
         List<Integer> slotNumbers = new ArrayList<>();
-        for (Vehicle vehicleInParkingLot : parkingLot) {
-            if (vehicleInParkingLot.getColor().equalsIgnoreCase(color)) {
-                slotNumbers.add(vehicleInParkingLot.getSlotNumber());
+        for (Parking parking : parkingList) {
+            if (parking.getVehicle().getColor().equalsIgnoreCase(color)) {
+                slotNumbers.add(parking.getVehicle().getSlotNumber());
             }
         }
         return slotNumbers;
     }
 
-    public List<Integer> getSlotNoForRegistrationNumber(List<Vehicle> parkingLot, String registrationNumber) {
+    public List<Integer> getSlotNoForRegistrationNumber(ParkingLot parkingLot, String registrationNumber) {
+        List<Parking> parkingLists = parkingLot.getParkingLotList();
         List<Integer> slotNumbers = new ArrayList<>();
-        for (Vehicle vehicleInParkingLot : parkingLot) {
-            if (vehicleInParkingLot.getRegistrationNumber().equalsIgnoreCase(registrationNumber)) {
-                slotNumbers.add(vehicleInParkingLot.getSlotNumber());
+        for (Parking parking : parkingLists) {
+            if (parking.getVehicle().getRegistrationNumber().equalsIgnoreCase(registrationNumber)) {
+                slotNumbers.add(parking.getVehicle().getSlotNumber());
             }
         }
         return slotNumbers;

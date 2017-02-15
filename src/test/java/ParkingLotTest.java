@@ -1,8 +1,9 @@
 import org.junit.Test;
+import parking.Parking;
+import parking.ParkingLot;
 import utils.ParkingUtils;
 import vehical.Vehicle;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 
@@ -36,10 +37,12 @@ public class ParkingLotTest {
         emptySlots.add(1);
         emptySlots.add(2);
         Vehicle vehicle = new Vehicle("ka-01", "Black", emptySlots.poll());
-        List<Vehicle> parkingLot = new LinkedList<>();
-        parkingLot.add(vehicle);
+        Parking parking = new Parking(vehicle);
+        ParkingLot parkingLot = new ParkingLot(4);
+        parkingLot.addParkingInList(parking);
         vehicle = new Vehicle("ka-02", "Blue", emptySlots.poll());
-        parkingLot.add(vehicle);
+        parking = new Parking(vehicle);
+        parkingLot.addParkingInList(parking);
         assertTrue("Not able to vacate space from parking", parkingUtils.leaveParking(parkingLot, 2));
         assertTrue("Not able to vacate space from parking", parkingUtils.leaveParking(parkingLot, 1));
         assertFalse("Not able to vacate space from parking", parkingUtils.leaveParking(parkingLot, 1));
@@ -53,11 +56,15 @@ public class ParkingLotTest {
         PriorityQueue<Integer> emptySlots = new PriorityQueue<>();
         emptySlots.add(1);
         emptySlots.add(2);
+
         Vehicle vehicle = new Vehicle("ka-01", "Black", emptySlots.poll());
-        List<Vehicle> parkingLot = new LinkedList<>();
-        parkingLot.add(vehicle);
+        ParkingLot parkingLot = new ParkingLot(4);
+        Parking parking = new Parking(vehicle);
+        parkingLot.addParkingInList(parking);
         vehicle = new Vehicle("ka-02", "Blue", emptySlots.poll());
-        parkingLot.add(vehicle);
+        parking = new Parking(vehicle);
+        parkingLot.addParkingInList(parking);
+
         List<String> list = parkingUtils.getRegistrationNoForCarWithColor(parkingLot, "White");
         assertEquals("Wrong no of vehicle found with that color", 0, list.size());
         list = parkingUtils.getRegistrationNoForCarWithColor(parkingLot, "Black");
@@ -72,11 +79,15 @@ public class ParkingLotTest {
         PriorityQueue<Integer> emptySlots = new PriorityQueue<>();
         emptySlots.add(1);
         emptySlots.add(2);
+
         Vehicle vehicle = new Vehicle("ka-01", "Black", emptySlots.poll());
-        List<Vehicle> parkingLot = new LinkedList<>();
-        parkingLot.add(vehicle);
+        ParkingLot parkingLot = new ParkingLot(4);
+        Parking parking = new Parking(vehicle);
+        parkingLot.addParkingInList(parking);
         vehicle = new Vehicle("ka-02", "Blue", emptySlots.poll());
-        parkingLot.add(vehicle);
+        parking = new Parking(vehicle);
+        parkingLot.addParkingInList(parking);
+
         List<Integer> list = parkingUtils.getSlotNoForCarWithColor(parkingLot, "White");
         assertEquals("Wrong no of vehicle found with that color", 0, list.size());
         list = parkingUtils.getSlotNoForCarWithColor(parkingLot, "Black");
@@ -91,11 +102,15 @@ public class ParkingLotTest {
         PriorityQueue<Integer> emptySlots = new PriorityQueue<>();
         emptySlots.add(1);
         emptySlots.add(2);
+
         Vehicle vehicle = new Vehicle("ka-01", "Black", emptySlots.poll());
-        List<Vehicle> parkingLot = new LinkedList<>();
-        parkingLot.add(vehicle);
+        ParkingLot parkingLot = new ParkingLot(4);
+        Parking parking = new Parking(vehicle);
+        parkingLot.addParkingInList(parking);
         vehicle = new Vehicle("ka-02", "Blue", emptySlots.poll());
-        parkingLot.add(vehicle);
+        parking = new Parking(vehicle);
+        parkingLot.addParkingInList(parking);
+
         List<Integer> list = parkingUtils.getSlotNoForRegistrationNumber(parkingLot, "ka-11");
         assertEquals("Wrong no of vehicle found with that registration number", 0, list.size());
         list = parkingUtils.getSlotNoForRegistrationNumber(parkingLot, "ka-01");

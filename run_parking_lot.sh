@@ -1,0 +1,1 @@
+java -jar target/parking-lot-1.0-SNAPSHOT.jar $1

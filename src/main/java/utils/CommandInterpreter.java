@@ -1,6 +1,8 @@
 package utils;
 
 import constants.Constants;
+import parking.Parking;
+import parking.ParkingLot;
 import vehical.Vehicle;
 
 import java.util.Collections;
@@ -12,9 +14,8 @@ import java.util.PriorityQueue;
  * Created by sam on 15/2/17.
  */
 public class CommandInterpreter {
-    private List<Vehicle> parkingLot = new LinkedList<>();
+    private ParkingLot parkingLot;
     private int numberOfParkingSlots = 0;
-    private int noOfOccupiedSlots = 0;
     private PriorityQueue<Integer> emptySlots = new PriorityQueue<>();
     private ParkingUtils parkingUtils = new ParkingUtils();
 
@@ -26,6 +27,7 @@ public class CommandInterpreter {
             switch (command) {
                 case Constants.CREATE_PARKING_LOT:
                     numberOfParkingSlots = Integer.parseInt(inputs[1]);
+                    parkingLot = new ParkingLot(numberOfParkingSlots);
                     System.out.println("Created a parking lot with " + numberOfParkingSlots + " slots");
                     for (int i = 1; i <= numberOfParkingSlots; i++) {
                         emptySlots.add(i);
@@ -33,12 +35,12 @@ public class CommandInterpreter {
                     break;
 
                 case Constants.PARK:
-                    if (noOfOccupiedSlots < numberOfParkingSlots) {
+                    if (parkingLot.getIsParkingAvailable()) {
                         String registrationNumber = inputs[1];
                         String color = inputs[2];
                         Vehicle vehicle = parkingUtils.parkVehicle(registrationNumber, color, emptySlots);
-                        parkingLot.add(vehicle);
-                        noOfOccupiedSlots++;
+                        Parking parking = new Parking(vehicle);
+                        parkingLot.addParkingInList(parking);
                     } else {
                         System.out.println("Sorry, parking lot is full");
                     }
@@ -47,10 +49,10 @@ public class CommandInterpreter {
 
                 case Constants.STATUS:
                     System.out.println("Slot No.\t" + "Registration No\t" + "Colour");
-                    Collections.sort(parkingLot, new Vehicle());
-                    for (Vehicle vehicleInParkingLot : parkingLot) {
-                        System.out.println(vehicleInParkingLot.getSlotNumber() + "\t" + vehicleInParkingLot.getRegistrationNumber()
-                                + "\t" + vehicleInParkingLot.getColor());
+                    Collections.sort(parkingLot.getParkingLotList(), new Parking());
+                    for (Parking parking : parkingLot.getParkingLotList()) {
+                        System.out.println(parking.getVehicle().getSlotNumber() + "\t" + parking.getVehicle().getRegistrationNumber()
+                                + "\t" + parking.getVehicle().getColor());
                     }
                     break;
 
@@ -59,7 +61,6 @@ public class CommandInterpreter {
                     boolean isLeaveSuccess = parkingUtils.leaveParking(parkingLot, requestedSlotToLeave);
                     if (isLeaveSuccess) {
                         emptySlots.add(requestedSlotToLeave);
-                        noOfOccupiedSlots--;
                         System.out.println("Slot number " + requestedSlotToLeave + " is free");
                     } else {
                         System.out.println("Not found");
