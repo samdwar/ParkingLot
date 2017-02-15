@@ -3,7 +3,10 @@ package utils;
 import constants.Constants;
 import vehical.Vehicle;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.PriorityQueue;
 
 /**
  * Created by sam on 15/2/17.
@@ -13,6 +16,7 @@ public class CommandInterpreter {
     private int numberOfParkingSlots = 0;
     private int noOfOccupiedSlots = 0;
     private PriorityQueue<Integer> emptySlots = new PriorityQueue<>();
+    private ParkingUtils parkingUtils = new ParkingUtils();
 
     public void interpretCommand(String line) {
         String[] inputs = line.split(" ");
@@ -32,10 +36,8 @@ public class CommandInterpreter {
                     if (noOfOccupiedSlots < numberOfParkingSlots) {
                         String registrationNumber = inputs[1];
                         String color = inputs[2];
-                        int slotNumber = emptySlots.poll();
-                        Vehicle vehicle = new Vehicle(registrationNumber, color, slotNumber);
+                        Vehicle vehicle = parkingUtils.parkVehicle(registrationNumber, color, emptySlots);
                         parkingLot.add(vehicle);
-                        System.out.println("Allocated slot number: " + slotNumber);
                         noOfOccupiedSlots++;
                     } else {
                         System.out.println("Sorry, parking lot is full");
@@ -54,61 +56,41 @@ public class CommandInterpreter {
 
                 case Constants.LEAVE:
                     int requestedSlotToLeave = Integer.parseInt(inputs[1]);
-                    Iterator<Vehicle> iterator = parkingLot.listIterator();
-                    while (iterator.hasNext()) {
-                        Vehicle v = iterator.next();
-                        if (v.getSlotNumber() == requestedSlotToLeave) {
-                            iterator.remove();
-                        }
-                    }
-                    System.out.println("Slot number " + requestedSlotToLeave + " is free");
-                    emptySlots.add(requestedSlotToLeave);
-                    noOfOccupiedSlots--;
-                    break;
-                case Constants.REG_NO_FOR_CAR_WITH_COLOR:
-                    boolean isFound = false;
-                    String color = inputs[1];
-                    List<String> registrationNumbers = new ArrayList<>();
-                    for (Vehicle vehicleInParkingLot : parkingLot) {
-                        if (vehicleInParkingLot.getColor().equalsIgnoreCase(color)) {
-                            registrationNumbers.add(vehicleInParkingLot.getRegistrationNumber());
-                            isFound = true;
-                        }
-                    }
-                    if (isFound) {
-                        System.out.println(registrationNumbers);
+                    boolean isLeaveSuccess = parkingUtils.leaveParking(parkingLot, requestedSlotToLeave);
+                    if (isLeaveSuccess) {
+                        emptySlots.add(requestedSlotToLeave);
+                        noOfOccupiedSlots--;
+                        System.out.println("Slot number " + requestedSlotToLeave + " is free");
                     } else {
                         System.out.println("Not found");
                     }
                     break;
+
+                case Constants.REG_NO_FOR_CAR_WITH_COLOR:
+                    String color = inputs[1];
+                    List<String> regNoList = parkingUtils.getRegistrationNoForCarWithColor(parkingLot, color);
+                    if (regNoList != null && regNoList.size() > 0) {
+                        System.out.println(regNoList);
+                    } else {
+                        System.out.println("Not found");
+                    }
+                    break;
+
                 case Constants.SLOT_NO_FOR_CAR_WITH_COLOR:
                     color = inputs[1];
-                    isFound = false;
-                    List<Integer> slotNumbers = new ArrayList<>();
-                    for (Vehicle vehicleInParkingLot : parkingLot) {
-                        if (vehicleInParkingLot.getColor().equalsIgnoreCase(color)) {
-                            slotNumbers.add(vehicleInParkingLot.getSlotNumber());
-                            isFound = true;
-                        }
-                    }
-                    if (isFound) {
-                        System.out.println(slotNumbers);
+                    List<Integer> slotList = parkingUtils.getSlotNoForCarWithColor(parkingLot, color);
+                    if (slotList != null && slotList.size() > 0) {
+                        System.out.println(slotList);
                     } else {
                         System.out.println("Not found");
                     }
                     break;
+
                 case Constants.SLOT_NUMBER_FOR_REG_NUMBER:
                     String registrationNumber = inputs[1];
-                    slotNumbers = new ArrayList<>();
-                    isFound = false;
-                    for (Vehicle vehicleInParkingLot : parkingLot) {
-                        if (vehicleInParkingLot.getRegistrationNumber().equalsIgnoreCase(registrationNumber)) {
-                            slotNumbers.add(vehicleInParkingLot.getSlotNumber());
-                            isFound = true;
-                        }
-                    }
-                    if (isFound) {
-                        System.out.println(slotNumbers);
+                    slotList = parkingUtils.getSlotNoForRegistrationNumber(parkingLot, registrationNumber);
+                    if (slotList != null && slotList.size() > 0) {
+                        System.out.println(slotList);
                     } else {
                         System.out.println("Not found");
                     }

@@ -1,5 +1,5 @@
-import utils.CommandInterpreter;
 import constants.Constants;
+import utils.CommandInterpreter;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -11,8 +11,6 @@ import java.util.Scanner;
  */
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello");
-//        System.out.println(args[0]);
         boolean isInputIsFile = false;
         if (args != null && args.length > 0 && args[0] != null) {
             isInputIsFile = true;
